@@ -1,73 +1,98 @@
 const fs = require('fs').promises;
 const path = require('path');
+const { saveMetadata } = require('./metadataService');
 
 /**
  * Organize and save processed file
- * @param {Object} fileData - File data with category, date, and content
- * @param {string} uploadDir - Base upload directory
- * @returns {Promise<Object>} File organization result
+ * Hierarchy: Date -> Medical Category -> File
  */
 async function organizeFile(fileData, uploadDir) {
-    const { category, date, pageNumber, pdfBytes, originalName } = fileData;
+    const { category, date, pageNumber, pdfBytes, originalName, textContent } = fileData;
 
-    // Create category directory
-    const categoryDir = path.join(uploadDir, category);
+    // Create date directory (YYYY-MM-DD or Unknown Date)
+    const dateStr = date || 'Unknown Date';
+    const dateDir = path.join(uploadDir, dateStr);
+
+    // Create category directory inside date directory
+    const categoryDir = path.join(dateDir, category);
+
     await ensureDirectoryExists(categoryDir);
 
-    // Generate filename: originalName_date_pageX.pdf
+    // Generate filename: originalName_page1.pdf
     const baseName = path.parse(originalName).name;
-    const fileName = `${baseName}_${date}_page${pageNumber}.pdf`;
+    const fileName = `${baseName}_page${pageNumber + 1}.pdf`;
     const filePath = path.join(categoryDir, fileName);
 
     // Save file
     await fs.writeFile(filePath, pdfBytes);
 
-    console.log(`Saved: ${filePath}`);
+    console.log(`[Storage] Saved file to: ${filePath}`);
+
+    // Save metadata to simulated DB
+    await saveMetadata({
+        originalFileName: originalName,
+        pageNumber: pageNumber + 1,
+        detectedDate: dateStr,
+        normalizedCategory: category,
+        filePath: filePath.replace(/\\/g, '/'),
+        extractedTextPreview: textContent ? textContent.substring(0, 200) + '...' : ''
+    });
 
     return {
         category,
-        date,
-        pageNumber,
+        date: dateStr,
+        pageNumber: pageNumber + 1,
         fileName,
         filePath: filePath.replace(/\\/g, '/')
     };
 }
 
 /**
- * Ensure directory exists, create if not
- * @param {string} dirPath - Directory path
+ * Ensure directory exists
  */
 async function ensureDirectoryExists(dirPath) {
     try {
         await fs.access(dirPath);
-    } catch (error) {
+    } catch {
         await fs.mkdir(dirPath, { recursive: true });
-        console.log(`Created directory: ${dirPath}`);
     }
 }
 
 /**
- * Get organized file structure for display
- * @param {string} uploadDir - Base upload directory
- * @returns {Promise<Object>} File structure organized by category
+ * Get file structure (recursively)
  */
 async function getFileStructure(uploadDir) {
     try {
         await ensureDirectoryExists(uploadDir);
-        const categories = await fs.readdir(uploadDir);
-
         const structure = {};
 
-        for (const category of categories) {
-            const categoryPath = path.join(uploadDir, category);
-            const stat = await fs.stat(categoryPath);
+        // Read dates
+        const dates = await fs.readdir(uploadDir);
 
-            if (stat.isDirectory()) {
-                const files = await fs.readdir(categoryPath);
-                structure[category] = files.map(file => ({
-                    name: file,
-                    path: path.join(categoryPath, file).replace(/\\/g, '/')
-                }));
+        for (const dateFolder of dates) {
+            const datePath = path.join(uploadDir, dateFolder);
+            const dateStat = await fs.stat(datePath);
+
+            if (dateStat.isDirectory()) {
+                // Read categories inside date
+                const categories = await fs.readdir(datePath);
+
+                for (const category of categories) {
+                    const catPath = path.join(datePath, category);
+                    const catStat = await fs.stat(catPath);
+
+                    if (catStat.isDirectory()) {
+                        const files = await fs.readdir(catPath);
+
+                        // Structure: Date -> Category -> Files
+                        if (!structure[dateFolder]) structure[dateFolder] = {};
+
+                        structure[dateFolder][category] = files.map(file => ({
+                            name: file,
+                            path: path.join(catPath, file).replace(/\\/g, '/')
+                        }));
+                    }
+                }
             }
         }
 

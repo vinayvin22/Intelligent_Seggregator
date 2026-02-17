@@ -6,10 +6,11 @@ const path = require('path');
 const fs = require('fs').promises;
 
 const { processPDF } = require('./services/pdfProcessor');
-const { extractTextFromImage } = require('./services/ocrService');
 const { extractDate } = require('./services/dateExtractor');
 const { detectCategory, initializeAI } = require('./services/categoryDetector');
 const { organizeFile, getFileStructure, ensureDirectoryExists } = require('./services/fileOrganizer');
+const { processTextFile, processJsonFile } = require('./services/textProcessor');
+const { processImageToPdf } = require('./services/ocrService');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -42,11 +43,16 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
-        const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'];
+        const allowedTypes = [
+            'application/pdf',
+            'image/png', 'image/jpeg', 'image/jpg',
+            'text/plain',
+            'application/json'
+        ];
         if (allowedTypes.includes(file.mimetype)) {
             cb(null, true);
         } else {
-            cb(new Error('Only PDF and image files are allowed'));
+            cb(new Error('Invalid file type. Allowed: PDF, PNG, JPG, TXT, JSON'));
         }
     },
     limits: {
@@ -76,18 +82,13 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
                 let pages = [];
 
                 if (file.mimetype === 'application/pdf') {
-                    // Process PDF
                     pages = await processPDF(file.path);
-                } else {
-                    // Process image with OCR
-                    const text = await extractTextFromImage(file.path);
-                    const fileBuffer = await fs.readFile(file.path);
-                    pages = [{
-                        pageNumber: 0,
-                        text: text,
-                        pdfBytes: fileBuffer,
-                        totalPages: 1
-                    }];
+                } else if (file.mimetype === 'text/plain') {
+                    pages = await processTextFile(file.path);
+                } else if (file.mimetype === 'application/json') {
+                    pages = await processJsonFile(file.path);
+                } else if (file.mimetype.startsWith('image/')) {
+                    pages = await processImageToPdf(file.path);
                 }
 
                 // Process each page
@@ -106,14 +107,15 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
                         date,
                         pageNumber: page.pageNumber,
                         pdfBytes: page.pdfBytes,
-                        originalName: file.originalname
+                        originalName: file.originalname,
+                        textContent: page.text
                     }, UPLOAD_DIR);
 
                     results.push(result);
                 }
 
                 // Clean up temp file
-                await fs.unlink(file.path);
+                await fs.unlink(file.path).catch(() => { });
 
             } catch (error) {
                 console.error(`Error processing ${file.originalname}:`, error);

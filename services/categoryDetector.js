@@ -91,17 +91,17 @@ function detectWithKeywords(text) {
 
     // Define keyword patterns for each category
     const patterns = {
-        'Heart': /\b(heart|cardiac|cardio|ecg|ekg|coronary|cardiovascular|myocardial)\b/i,
-        'Kidney': /\b(kidney|renal|nephro|creatinine|urea|dialysis)\b/i,
-        'Brain': /\b(brain|neuro|cerebral|cranial|mri brain|ct brain|stroke|seizure)\b/i,
-        'Eye': /\b(eye|ophthalm|retina|vision|visual|cataract|glaucoma)\b/i,
-        'Liver': /\b(liver|hepatic|hepato|cirrhosis|hepatitis|jaundice|alt|ast|sgpt|sgot)\b/i,
-        'Lung': /\b(lung|pulmonary|respiratory|breathing|chest|bronchial|asthma|copd)\b/i,
-        'Blood': /\b(blood|hematology|hemoglobin|platelet|wbc|rbc|cbc|anemia)\b/i,
-        'Bone': /\b(bone|orthopedic|skeletal|fracture|joint|arthritis|x-ray|xray|spine)\b/i,
-        'Thyroid': /\b(thyroid|tsh|t3|t4|hyperthyroid|hypothyroid|goiter)\b/i,
-        'Diabetes': /\b(diabetes|diabetic|insulin|glucose|hba1c|blood sugar)\b/i,
-        'Skin': /\b(skin|dermatology|dermal|rash|eczema|psoriasis|melanoma)\b/i
+        'Heart': /\b(heart|cardiac|cardio|ecg|ekg|coronary|cardiovascular|myocardial|atrial|ventricular|arrhythmia|angina)\b/gi,
+        'Kidney': /\b(kidney|renal|nephro|creatinine|urea|dialysis|nephrology)\b/gi,
+        'Brain': /\b(brain|neuro|cerebral|cranial|mri brain|ct brain|stroke|seizure|neurology|epilepsy)\b/gi,
+        'Eye': /\b(eye|ophthalm|retina|vision|visual|cataract|glaucoma|cornea|optic)\b/gi,
+        'Liver': /\b(liver|hepatic|hepato|cirrhosis|hepatitis|jaundice|alt|ast|sgpt|sgot)\b/gi,
+        'Lung': /\b(lung|pulmonary|respiratory|breathing|chest|bronchial|asthma|copd|pneumonia)\b/gi,
+        'Blood': /\b(blood|hematology|hemoglobin|platelet|wbc|rbc|cbc|anemia|leukemia)\b/gi,
+        'Bone': /\b(bone|orthopedic|skeletal|fracture|joint|arthritis|x-ray|xray|spine|osteoporosis)\b/gi,
+        'Thyroid': /\b(thyroid|tsh|t3|t4|hyperthyroid|hypothyroid|goiter)\b/gi,
+        'Diabetes': /\b(diabetes|diabetic|insulin|glucose|hba1c|blood sugar)\b/gi,
+        'Skin': /\b(skin|dermatology|dermal|rash|eczema|psoriasis|melanoma|acne)\b/gi
     };
 
     // Count matches for each category

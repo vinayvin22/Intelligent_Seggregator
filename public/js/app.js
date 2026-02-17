@@ -217,11 +217,11 @@ function displayResults(data) {
         data.results.forEach(result => {
             if (result.error) return;
 
-            if (!batchStructure[result.category]) {
-                batchStructure[result.category] = [];
-            }
+            const dateKey = result.date || 'Unknown Date';
+            if (!batchStructure[dateKey]) batchStructure[dateKey] = {};
+            if (!batchStructure[dateKey][result.category]) batchStructure[dateKey][result.category] = [];
 
-            batchStructure[result.category].push({
+            batchStructure[dateKey][result.category].push({
                 name: result.fileName,
                 path: result.filePath
             });
@@ -241,21 +241,33 @@ function displayFileStructure(structure) {
         return;
     }
 
-    fileTree.innerHTML = Object.entries(structure).map(([category, files]) => `
-        <div class="tree-category">
-            <div class="tree-category-name">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
-                </svg>
-                ${category} (${files.length})
-            </div>
-            ${files.map(file => `
-                <div class="tree-file">
-                    └─ <a href="/${file.path}" class="file-link" target="_blank">${file.name}</a>
+    const dates = Object.keys(structure).sort().reverse();
+
+    fileTree.innerHTML = dates.map(date => {
+        const categories = structure[date];
+        const categoryHtml = Object.entries(categories).map(([category, files]) => `
+            <div class="tree-category">
+                <div class="tree-category-name">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+                    </svg>
+                    ${category} (${files.length})
                 </div>
-            `).join('')}
-        </div>
-    `).join('');
+                ${files.map(file => `
+                    <div class="tree-file">
+                        └─ <a href="/${file.path}" class="file-link" target="_blank">${file.name}</a>
+                    </div>
+                `).join('')}
+            </div>
+        `).join('');
+
+        return `
+            <div class="tree-date-group" style="margin-bottom: 20px;">
+                <div class="tree-date-header" style="font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; padding-bottom: 5px;">📅 ${date}</div>
+                <div class="tree-date-content" style="padding-left: 10px;">${categoryHtml}</div>
+            </div>
+        `;
+    }).join('');
 }
 
 /**

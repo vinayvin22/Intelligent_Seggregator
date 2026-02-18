@@ -24,7 +24,25 @@ async function processJsonFile(filePath) {
 }
 
 /**
+ * Process XML file and convert to PDF
+ */
+async function processXMLFile(filePath) {
+    const xml2js = require('xml2js');
+    const content = await fs.readFile(filePath, 'utf8');
+    let text = content;
+    try {
+        const parser = new xml2js.Parser();
+        const result = await parser.parseStringPromise(content);
+        text = JSON.stringify(result, null, 2);
+    } catch (e) {
+        // Fallback to raw text
+    }
+    return await createPdfFromText(text);
+}
+
+/**
  * Helper to create PDF from text content
+ * Exported to be used by other processors (Office, Media, etc.)
  */
 async function createPdfFromText(text) {
     const pdfDoc = await PDFDocument.create();
@@ -37,7 +55,6 @@ async function createPdfFromText(text) {
     const maxLinesPerPage = Math.floor((height - 2 * margin) / lineHeight);
 
     // Basic text wrapping/sanitization
-    // Remove null bytes and non-printable characters roughly
     const cleanText = text.replace(/[\x00-\x09\x0B-\x0C\x0E-\x1F]/g, '');
 
     // Split lines
@@ -52,8 +69,7 @@ async function createPdfFromText(text) {
             linesOnPage = 0;
         }
 
-        // Draw line (truncating if too long for simplicity in this demo)
-        // A robust solution would wrap text
+        // Draw line (truncating if too long for simplicity)
         const safeLine = line.substring(0, 100);
 
         page.drawText(safeLine, {
@@ -78,4 +94,9 @@ async function createPdfFromText(text) {
     }];
 }
 
-module.exports = { processTextFile, processJsonFile };
+module.exports = {
+    processTextFile,
+    processJsonFile,
+    processXMLFile,
+    createPdfFromText
+};

@@ -5,14 +5,12 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs').promises;
 
-const { processPDF } = require('./services/pdfProcessor');
 const { extractDate } = require('./services/dateExtractor');
 const { detectCategory, initializeAI } = require('./services/categoryDetector');
 const { organizeFile, getFileStructure, ensureDirectoryExists } = require('./services/fileOrganizer');
-const { processTextFile, processJsonFile } = require('./services/textProcessor');
-const { processImageToPdf } = require('./services/ocrService');
 const { saveMetadata } = require('./services/metadataService');
 const { DocumentState, ProcessingStatus } = require('./services/processingState');
+const { dispatchProcessing } = require('./services/universalProcessor');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -73,28 +71,8 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
                 // Transition to PROCESSING
                 state.transition(ProcessingStatus.PROCESSING);
 
-                // Process based on file type
-                let pages = [];
-
-                if (file.mimetype === 'application/pdf') {
-                    pages = await processPDF(file.path);
-                } else if (file.mimetype === 'text/plain') {
-                    pages = await processTextFile(file.path);
-                } else if (file.mimetype === 'application/json') {
-                    pages = await processJsonFile(file.path);
-                } else if (file.mimetype.startsWith('image/')) {
-                    pages = await processImageToPdf(file.path);
-                } else {
-                    // Generic handler for all other file types
-                    const buffer = await fs.readFile(file.path);
-                    pages = [{
-                        pageNumber: 0,
-                        text: file.originalname, // Use filename as context
-                        pdfBytes: buffer,
-                        totalPages: 1,
-                        extension: path.extname(file.originalname)
-                    }];
-                }
+                // Universal Processing Pipeline (Handles PDF, Image, Office, Media, Text, etc.)
+                const pages = await dispatchProcessing(file.path, file.mimetype);
 
                 state.transition(ProcessingStatus.CLASSIFIED, { pageCount: pages.length });
 

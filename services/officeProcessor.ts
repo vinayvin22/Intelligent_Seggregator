@@ -1,17 +1,16 @@
-const mammoth = require('mammoth');
-const xlsx = require('xlsx');
-const fs = require('fs').promises;
-const { createPdfFromText } = require('./textProcessor');
+import * as mammoth from 'mammoth';
+import * as xlsx from 'xlsx';
+import { createPdfFromText } from './textProcessor';
 
 /**
  * Process Word, Excel, and CSV documents.
  * Extracts text and converts to PDF for unified storage.
  * 
- * @param {string} filePath - Absolute path to the file
- * @param {string} mimeType - Detected MIME type
- * @returns {Promise<Array>} Standard page objects
+ * @param filePath - Absolute path to the file
+ * @param mimeType - Detected MIME type
+ * @returns Standard page objects
  */
-async function processOfficeFile(filePath, mimeType) {
+export async function processOfficeFile(filePath: string, mimeType: string): Promise<any[]> {
     let text = '';
 
     try {
@@ -45,10 +44,8 @@ async function processOfficeFile(filePath, mimeType) {
 
         return await createPdfFromText(text);
 
-    } catch (error) {
+    } catch (error: any) {
         console.error(`[OfficeProcessor] Error: ${error.message}`);
         return await createPdfFromText(`[OfficeProcessor] Error extracting content: ${error.message}`);
     }
 }
-
-module.exports = { processOfficeFile };

@@ -1,12 +1,12 @@
-const fs = require('fs').promises;
-const path = require('path');
-const { saveMetadata } = require('./metadataService');
+import { promises as fs } from 'fs';
+import * as path from 'path';
+import { saveMetadata } from './metadataService';
 
 /**
  * Organize and save processed file
  * Hierarchy: Date -> Medical Category -> File
  */
-async function organizeFile(fileData, uploadDir) {
+export async function organizeFile(fileData: any, uploadDir: string): Promise<any> {
     const { category, date, pageNumber, pdfBytes, originalName, textContent } = fileData;
 
     // Create date directory (YYYY-MM-DD or Unknown Date)
@@ -52,7 +52,7 @@ async function organizeFile(fileData, uploadDir) {
 /**
  * Ensure directory exists
  */
-async function ensureDirectoryExists(dirPath) {
+export async function ensureDirectoryExists(dirPath: string): Promise<void> {
     try {
         await fs.access(dirPath);
     } catch {
@@ -63,10 +63,10 @@ async function ensureDirectoryExists(dirPath) {
 /**
  * Get file structure (recursively)
  */
-async function getFileStructure(uploadDir) {
+export async function getFileStructure(uploadDir: string): Promise<any> {
     try {
         await ensureDirectoryExists(uploadDir);
-        const structure = {};
+        const structure: { [key: string]: { [key: string]: any[] } } = {};
 
         // Read dates
         const dates = await fs.readdir(uploadDir);
@@ -104,5 +104,3 @@ async function getFileStructure(uploadDir) {
         return {};
     }
 }
-
-module.exports = { organizeFile, getFileStructure, ensureDirectoryExists };

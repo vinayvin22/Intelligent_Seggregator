@@ -1,22 +1,22 @@
-const { detectFileType } = require('./fileTypeDetector');
-const { processPDF } = require('./pdfProcessor');
-const { processImageToPdf } = require('./ocrService');
-const { processTextFile, processJsonFile, processXMLFile, createPdfFromText } = require('./textProcessor');
-const { processOfficeFile } = require('./officeProcessor');
-const { processMediaFile } = require('./mediaProcessor');
-const { processArchiveFile } = require('./archiveProcessor');
-const path = require('path');
+import { detectFileType } from './fileTypeDetector';
+import { processPDF } from './pdfProcessor';
+import { processImageToPdf } from './ocrService';
+import { processTextFile, processJsonFile, processXMLFile, createPdfFromText } from './textProcessor';
+import { processOfficeFile } from './officeProcessor';
+import { processMediaFile } from './mediaProcessor';
+import { processArchiveFile } from './archiveProcessor';
+import * as path from 'path';
 
 /**
  * The Universal Processing Pipeline.
  * Orchestrates file type detection and routes to the correct processor.
  * Ensures the system accepts ANY file format.
  * 
- * @param {string} filePath - Absolute path to the uploaded file
- * @param {string} originalMime - Original MIME type from Multer
- * @returns {Promise<Array>} Standardized page objects for storage and indexing
+ * @param filePath - Absolute path to the uploaded file
+ * @param originalMime - Original MIME type from Multer
+ * @returns Standardized page objects for storage and indexing
  */
-async function dispatchProcessing(filePath, originalMime) {
+export async function dispatchProcessing(filePath: string, originalMime: string): Promise<any[]> {
     // 1. Precise detection (header-based)
     const { mime, ext } = await detectFileType(filePath);
     console.log(`[Dispatcher] Detected: ${mime} (Original: ${originalMime})`);
@@ -72,11 +72,9 @@ async function dispatchProcessing(filePath, originalMime) {
 
         return await createPdfFromText(fallbackText);
 
-    } catch (error) {
+    } catch (error: any) {
         console.error(`[Dispatcher] Error in pipeline: ${error.message}`);
         // Ensure we still pass something back to avoid breaking the organizing loop
         return await createPdfFromText(`[Critical Failure] Error processing ${path.basename(filePath)}: ${error.message}`);
     }
 }
-
-module.exports = { dispatchProcessing };

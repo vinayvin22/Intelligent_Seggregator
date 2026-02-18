@@ -3,7 +3,7 @@
  * Maps various medical terms to standardized categories
  */
 
-const categoryMappings = {
+export const categoryMappings: { [key: string]: string[] } = {
     // Heart related
     'heart': ['heart', 'cardiac', 'cardio', 'ecg', 'ekg', 'coronary', 'cardiovascular', 'myocardial', 'atrial', 'ventricular', 'heart disease', 'heart function', 'heart problem', 'heart attack', 'angina', 'arrhythmia'],
 
@@ -43,10 +43,10 @@ const categoryMappings = {
 
 /**
  * Normalize category name to standard format
- * @param {string} detectedCategory - Category detected by AI
- * @returns {string} Normalized category name
+ * @param detectedCategory - Category detected by AI
+ * @returns Normalized category name
  */
-function normalizeCategory(detectedCategory) {
+export function normalizeCategory(detectedCategory: string): string {
     if (!detectedCategory) return 'General';
 
     const lowerCategory = detectedCategory.toLowerCase().trim();
@@ -71,11 +71,9 @@ function normalizeCategory(detectedCategory) {
 
 /**
  * Capitalize first letter
- * @param {string} str - String to capitalize
- * @returns {string} Capitalized string
+ * @param str - String to capitalize
+ * @returns Capitalized string
  */
-function capitalize(str) {
+function capitalize(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
-
-module.exports = { normalizeCategory, categoryMappings };

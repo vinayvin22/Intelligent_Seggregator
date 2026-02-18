@@ -1,11 +1,11 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-const { normalizeCategory } = require('./categoryNormalizer');
+import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
+import { normalizeCategory } from './categoryNormalizer';
 
 // Initialize Gemini AI
-let genAI;
-let model;
+let genAI: GoogleGenerativeAI | undefined;
+let model: GenerativeModel | undefined;
 
-function initializeAI(apiKey) {
+export function initializeAI(apiKey: string | undefined): boolean {
     if (!apiKey) {
         console.warn('No Gemini API key provided. Category detection will use fallback method.');
         return false;
@@ -24,10 +24,10 @@ function initializeAI(apiKey) {
 
 /**
  * Detect medical category from document text using AI
- * @param {string} text - Document text
- * @returns {Promise<string>} Detected and normalized category
+ * @param text - Document text
+ * @returns Detected and normalized category
  */
-async function detectCategory(text) {
+export async function detectCategory(text: string): Promise<string> {
     if (!text || text.trim().length < 10) {
         return 'General';
     }
@@ -48,10 +48,12 @@ async function detectCategory(text) {
 
 /**
  * Detect category using Gemini AI
- * @param {string} text - Document text
- * @returns {Promise<string>} Detected category
+ * @param text - Document text
+ * @returns Detected category
  */
-async function detectWithAI(text) {
+async function detectWithAI(text: string): Promise<string> {
+    if (!model) throw new Error('AI model not initialized');
+
     const prompt = `You are a medical document classifier. Analyze the following medical document text and identify which medical category it belongs to.
 
 Available categories:
@@ -83,14 +85,14 @@ Respond with ONLY the category name (one word). If you cannot determine the cate
 
 /**
  * Fallback keyword-based category detection
- * @param {string} text - Document text
- * @returns {string} Detected category
+ * @param text - Document text
+ * @returns Detected category
  */
-function detectWithKeywords(text) {
+function detectWithKeywords(text: string): string {
     const lowerText = text.toLowerCase();
 
     // Define keyword patterns for each category
-    const patterns = {
+    const patterns: { [key: string]: RegExp } = {
         'Heart': /\b(heart|cardiac|cardio|ecg|ekg|coronary|cardiovascular|myocardial|atrial|ventricular|arrhythmia|angina)\b/gi,
         'Kidney': /\b(kidney|renal|nephro|creatinine|urea|dialysis|nephrology)\b/gi,
         'Brain': /\b(brain|neuro|cerebral|cranial|mri brain|ct brain|stroke|seizure|neurology|epilepsy)\b/gi,
@@ -119,5 +121,3 @@ function detectWithKeywords(text) {
     console.log(`Keyword-based detection: ${detectedCategory} (${maxMatches} matches)`);
     return detectedCategory;
 }
-
-module.exports = { detectCategory, initializeAI };

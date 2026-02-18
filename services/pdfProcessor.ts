@@ -1,13 +1,13 @@
-const { PDFDocument } = require('pdf-lib');
-const pdfParse = require('pdf-parse');
-const fs = require('fs').promises;
+import { PDFDocument } from 'pdf-lib';
+import pdfParse from 'pdf-parse';
+import { promises as fs } from 'fs';
 
 /**
  * Split a multi-page PDF into individual pages and extract text from each
- * @param {string} filePath - Path to the PDF file
- * @returns {Promise<Array>} Array of page objects with text and page number
+ * @param filePath - Path to the PDF file
+ * @returns Array of page objects with text and page number
  */
-async function processPDF(filePath) {
+export async function processPDF(filePath: string): Promise<any[]> {
     try {
         const dataBuffer = await fs.readFile(filePath);
 
@@ -17,7 +17,7 @@ async function processPDF(filePath) {
 
         console.log(`Processing PDF with ${pageCount} pages`);
 
-        const pages = [];
+        const pages: any[] = [];
 
         // Process each page
         for (let i = 0; i < pageCount; i++) {
@@ -41,16 +41,14 @@ async function processPDF(filePath) {
             pages.push({
                 pageNumber: i,
                 text: pageText,
-                pdfBytes: pdfBytes,
+                pdfBytes: Buffer.from(pdfBytes), // Ensure it's a Buffer for consistent handling
                 totalPages: pageCount
             });
         }
 
         return pages;
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error processing PDF:', error);
         throw new Error(`Failed to process PDF: ${error.message}`);
     }
 }
-
-module.exports = { processPDF };

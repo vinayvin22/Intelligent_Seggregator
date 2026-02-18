@@ -238,5 +238,205 @@
     "filePath": "uploads/2026-02-18/Diabetes/Lab Report-2_page6.pdf",
     "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
     "uploadTimestamp": "2026-02-18T08:10:43.562Z"
+  },
+  {
+    "id": "1771409747166d8pjfd500",
+    "originalFileName": "Dummy_Heart_Checkup_Medical_Report (1).docx",
+    "pageNumber": 1,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "General",
+    "filePath": "uploads/2026-02-18/General/Dummy_Heart_Checkup_Medical_Report (1)_page1.pdf",
+    "extractedTextPreview": "[Critical Failure] Error processing 1771409746658-Dummy_Heart_Checkup_Medical_Report (1).docx: WinAnsi cannot encode \"₂\" (0x2082)...",
+    "uploadTimestamp": "2026-02-18T10:15:47.166Z"
+  },
+  {
+    "id": "1771409747522xm8bql5fp",
+    "originalFileName": "Lab Report.pdf",
+    "pageNumber": 1,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "Blood",
+    "filePath": "uploads/2026-02-18/Blood/Lab Report_page1.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T10:15:47.522Z"
+  },
+  {
+    "id": "1771409749446ifnbwjufk",
+    "originalFileName": "Dental.jpg",
+    "pageNumber": 1,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "General",
+    "filePath": "uploads/2026-02-18/General/Dental_page1.pdf",
+    "extractedTextPreview": "a ——\n...",
+    "uploadTimestamp": "2026-02-18T10:15:49.446Z"
+  },
+  {
+    "id": "1771409804224f7h7pvbpx",
+    "originalFileName": "Lab Report.pdf",
+    "pageNumber": 1,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "Blood",
+    "filePath": "uploads/2026-02-18/Blood/Lab Report_page1.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T10:16:44.224Z"
+  },
+  {
+    "id": "1771409804696nbwey447x",
+    "originalFileName": "Dental.jpg",
+    "pageNumber": 1,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "General",
+    "filePath": "uploads/2026-02-18/General/Dental_page1.pdf",
+    "extractedTextPreview": "a ——\n...",
+    "uploadTimestamp": "2026-02-18T10:16:44.696Z"
+  },
+  {
+    "id": "17714124231496cot1q8vs",
+    "originalFileName": "H110000194196740842861N.PDF",
+    "pageNumber": 1,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "General",
+    "filePath": "uploads/2026-02-18/General/H110000194196740842861N_page1.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T11:00:23.149Z"
+  },
+  {
+    "id": "1771412423182ptcpwth4d",
+    "originalFileName": "H110000194196740842861N.PDF",
+    "pageNumber": 2,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "Liver",
+    "filePath": "uploads/2026-02-18/Liver/H110000194196740842861N_page2.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T11:00:23.182Z"
+  },
+  {
+    "id": "1771412423212cxwql6djl",
+    "originalFileName": "H110000194196740842861N.PDF",
+    "pageNumber": 3,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "Blood",
+    "filePath": "uploads/2026-02-18/Blood/H110000194196740842861N_page3.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T11:00:23.212Z"
+  },
+  {
+    "id": "1771412423239bdvi2lvk5",
+    "originalFileName": "H110000194196740842861N.PDF",
+    "pageNumber": 4,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "Kidney",
+    "filePath": "uploads/2026-02-18/Kidney/H110000194196740842861N_page4.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T11:00:23.239Z"
+  },
+  {
+    "id": "17714124232966sqcs1vjr",
+    "originalFileName": "H110000194196740842861N.PDF",
+    "pageNumber": 5,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "Thyroid",
+    "filePath": "uploads/2026-02-18/Thyroid/H110000194196740842861N_page5.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T11:00:23.296Z"
+  },
+  {
+    "id": "17714124233182tul61eya",
+    "originalFileName": "H110000194196740842861N.PDF",
+    "pageNumber": 6,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "Diabetes",
+    "filePath": "uploads/2026-02-18/Diabetes/H110000194196740842861N_page6.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T11:00:23.318Z"
+  },
+  {
+    "id": "1771412423587rj6zmy8dc",
+    "originalFileName": "Lab Report.pdf",
+    "pageNumber": 1,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "Blood",
+    "filePath": "uploads/2026-02-18/Blood/Lab Report_page1.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T11:00:23.587Z"
+  },
+  {
+    "id": "1771412424285x8stn6ssa",
+    "originalFileName": "Lab Report-2.pdf",
+    "pageNumber": 1,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "General",
+    "filePath": "uploads/2026-02-18/General/Lab Report-2_page1.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T11:00:24.285Z"
+  },
+  {
+    "id": "1771412424309e4192ge6e",
+    "originalFileName": "Lab Report-2.pdf",
+    "pageNumber": 2,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "Liver",
+    "filePath": "uploads/2026-02-18/Liver/Lab Report-2_page2.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T11:00:24.309Z"
+  },
+  {
+    "id": "17714124243288sz12k97j",
+    "originalFileName": "Lab Report-2.pdf",
+    "pageNumber": 3,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "Blood",
+    "filePath": "uploads/2026-02-18/Blood/Lab Report-2_page3.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T11:00:24.328Z"
+  },
+  {
+    "id": "1771412424347xhav5y29o",
+    "originalFileName": "Lab Report-2.pdf",
+    "pageNumber": 4,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "Kidney",
+    "filePath": "uploads/2026-02-18/Kidney/Lab Report-2_page4.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T11:00:24.347Z"
+  },
+  {
+    "id": "1771412424364yxlsic4ys",
+    "originalFileName": "Lab Report-2.pdf",
+    "pageNumber": 5,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "Thyroid",
+    "filePath": "uploads/2026-02-18/Thyroid/Lab Report-2_page5.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T11:00:24.364Z"
+  },
+  {
+    "id": "1771412424383pdylw25la",
+    "originalFileName": "Lab Report-2.pdf",
+    "pageNumber": 6,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "Diabetes",
+    "filePath": "uploads/2026-02-18/Diabetes/Lab Report-2_page6.pdf",
+    "extractedTextPreview": "\n\nName                               :\nMR MALLIKARJUNA NAGESH\nRegistration No              :\nMH009764134\nPatient Episode              :\nH11000019419\nReferred By                    :\nHEALTH CHECK MHM\nR...",
+    "uploadTimestamp": "2026-02-18T11:00:24.383Z"
+  },
+  {
+    "id": "1771412425438u6m82il6v",
+    "originalFileName": "Dental.jpg",
+    "pageNumber": 1,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "General",
+    "filePath": "uploads/2026-02-18/General/Dental_page1.pdf",
+    "extractedTextPreview": "a ——\n...",
+    "uploadTimestamp": "2026-02-18T11:00:25.438Z"
+  },
+  {
+    "id": "17714124259844nlhdi4vc",
+    "originalFileName": "Dummy_Heart_Checkup_Medical_Report.docx",
+    "pageNumber": 1,
+    "detectedDate": "2026-02-18",
+    "normalizedCategory": "General",
+    "filePath": "uploads/2026-02-18/General/Dummy_Heart_Checkup_Medical_Report_page1.pdf",
+    "extractedTextPreview": "[Critical Failure] Error processing 1771412422380-Dummy_Heart_Checkup_Medical_Report.docx: WinAnsi cannot encode \"₂\" (0x2082)...",
+    "uploadTimestamp": "2026-02-18T11:00:25.984Z"
   }
 ]

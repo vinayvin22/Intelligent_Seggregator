@@ -2,20 +2,28 @@
  * Enum for Document Processing Status
  * Ensures mutually exclusive and clearly defined states.
  */
-const ProcessingStatus = {
-    UPLOADED: 'UPLOADED',       // File received by server
-    PROCESSING: 'PROCESSING',   // Content extraction/conversion in progress
-    CLASSIFIED: 'CLASSIFIED',   // Category and Date detected
-    STORED: 'STORED',           // File saved to final location
-    FAILED: 'FAILED'            // Process encountered an unrecoverable error
+export const ProcessingStatus = {
+    UPLOADED: 'UPLOADED' as const,
+    PROCESSING: 'PROCESSING' as const,
+    CLASSIFIED: 'CLASSIFIED' as const,
+    STORED: 'STORED' as const,
+    FAILED: 'FAILED' as const
 };
+
+export type ProcessingStatusType = typeof ProcessingStatus[keyof typeof ProcessingStatus];
 
 /**
  * Manages the state lifecycle of a single document.
  * Provides safe transitions and error handling.
  */
-class DocumentState {
-    constructor(originalName) {
+export class DocumentState {
+    originalName: string;
+    status: ProcessingStatusType;
+    history: Array<{ status: ProcessingStatusType; timestamp: Date; error?: string }>;
+    error: string | null;
+    metadata: any;
+
+    constructor(originalName: string) {
         this.originalName = originalName;
         this.status = ProcessingStatus.UPLOADED;
         this.history = [{ status: ProcessingStatus.UPLOADED, timestamp: new Date() }];
@@ -25,11 +33,11 @@ class DocumentState {
 
     /**
      * Transition to a new state
-     * @param {string} newStatus - One of ProcessingStatus
-     * @param {Object} data - Optional data to merge into metadata
+     * @param newStatus - One of ProcessingStatus
+     * @param data - Optional data to merge into metadata
      */
-    transition(newStatus, data = {}) {
-        if (!ProcessingStatus[newStatus]) {
+    transition(newStatus: ProcessingStatusType, data: any = {}) {
+        if (!Object.values(ProcessingStatus).includes(newStatus)) {
             console.error(`Invalid state transition: ${newStatus}`);
             return;
         }
@@ -49,9 +57,9 @@ class DocumentState {
 
     /**
      * Mark process as failed
-     * @param {Error} error 
+     * @param error 
      */
-    fail(error) {
+    fail(error: Error) {
         this.status = ProcessingStatus.FAILED;
         this.error = error.message;
         this.history.push({ status: ProcessingStatus.FAILED, timestamp: new Date(), error: error.message });
@@ -71,5 +79,3 @@ class DocumentState {
         };
     }
 }
-
-module.exports = { ProcessingStatus, DocumentState };

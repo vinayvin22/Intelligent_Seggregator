@@ -1,17 +1,16 @@
-const path = require('path');
-const fs = require('fs').promises;
+import * as path from 'path';
 
 /**
  * Detect file MIME type robustly using magic bytes (Header inspection)
  * Falls back to file extension if magic bytes are unknown or detection fails.
  * 
- * @param {string} filePath - Absolute path to the file
- * @returns {Promise<{mime: string, ext: string}>} Detected MIME type and extension
+ * @param filePath - Absolute path to the file
+ * @returns Detected MIME type and extension
  */
-async function detectFileType(filePath) {
+export async function detectFileType(filePath: string): Promise<{ mime: string; ext: string }> {
     try {
         // Dynamic import for ESM-only 'file-type' package
-        const { fileTypeFromFile } = await import('file-type');
+        const { fileTypeFromFile }: any = await import('file-type');
         const fileType = await fileTypeFromFile(filePath);
 
         if (fileType) {
@@ -29,7 +28,7 @@ async function detectFileType(filePath) {
     const extRaw = path.extname(filePath).toLowerCase();
     const ext = extRaw.replace('.', '');
 
-    const mimeMap = {
+    const mimeMap: { [key: string]: string } = {
         'txt': 'text/plain',
         'csv': 'text/csv',
         'json': 'application/json',
@@ -73,5 +72,3 @@ async function detectFileType(filePath) {
         ext: ext || 'bin'
     };
 }
-
-module.exports = { detectFileType };

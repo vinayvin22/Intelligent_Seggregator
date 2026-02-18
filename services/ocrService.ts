@@ -1,13 +1,13 @@
-const Tesseract = require('tesseract.js');
-const { PDFDocument } = require('pdf-lib');
-const fs = require('fs').promises;
+import * as Tesseract from 'tesseract.js';
+import { PDFDocument, PDFImage } from 'pdf-lib';
+import { promises as fs } from 'fs';
 
 /**
  * Extract text from scanned images or PDFs using OCR
- * @param {Buffer|string} imageSource - Image buffer or path
- * @returns {Promise<string>} Extracted text
+ * @param imageSource - Image buffer or path
+ * @returns Extracted text
  */
-async function extractTextFromImage(imageSource) {
+export async function extractTextFromImage(imageSource: Buffer | string): Promise<string> {
     try {
         console.log('Running OCR on image...');
 
@@ -33,10 +33,10 @@ async function extractTextFromImage(imageSource) {
 
 /**
  * Process image: Run OCR and embed in PDF
- * @param {string} filePath - Path to image file
- * @returns {Promise<Array>} Page object similar to pdfProcessor
+ * @param filePath - Path to image file
+ * @returns Page object similar to pdfProcessor
  */
-async function processImageToPdf(filePath) {
+export async function processImageToPdf(filePath: string): Promise<any[]> {
     // Run OCR
     const text = await extractTextFromImage(filePath);
 
@@ -45,7 +45,7 @@ async function processImageToPdf(filePath) {
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage();
 
-    let image;
+    let image: PDFImage;
     const lowerPath = filePath.toLowerCase();
 
     try {
@@ -86,10 +86,6 @@ async function processImageToPdf(filePath) {
         }];
     } catch (error) {
         console.error('Error creating PDF from image:', error);
-        // Return raw OCR text if PDF conversion fails, but empty pdfBytes? 
-        // Need to be robust. Return empty PDF bytes or throw.
         throw error;
     }
 }
-
-module.exports = { extractTextFromImage, processImageToPdf };

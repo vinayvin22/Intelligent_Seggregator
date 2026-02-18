@@ -1,12 +1,12 @@
-const fs = require('fs').promises;
-const path = require('path');
+import { promises as fs } from 'fs';
+import * as path from 'path';
 
 const DB_FILE = path.join(__dirname, '../database.json');
 
 /**
  * Initialize the JSON database
  */
-async function initDB() {
+async function initDB(): Promise<void> {
     try {
         await fs.access(DB_FILE);
     } catch {
@@ -16,9 +16,9 @@ async function initDB() {
 
 /**
  * Save document metadata to the simulated database
- * @param {Object} metadata 
+ * @param metadata 
  */
-async function saveMetadata(metadata) {
+export async function saveMetadata(metadata: any): Promise<any> {
     await initDB();
     try {
         const fileContent = await fs.readFile(DB_FILE, 'utf8');
@@ -48,7 +48,7 @@ async function saveMetadata(metadata) {
 /**
  * Get all metadata records
  */
-async function getAllMetadata() {
+export async function getAllMetadata(): Promise<any[]> {
     await initDB();
     try {
         const data = await fs.readFile(DB_FILE, 'utf8');
@@ -57,5 +57,3 @@ async function getAllMetadata() {
         return [];
     }
 }
-
-module.exports = { saveMetadata, getAllMetadata };

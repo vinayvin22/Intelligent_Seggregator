@@ -1,16 +1,18 @@
-require('dotenv').config();
-const express = require('express');
-const multer = require('multer');
-const cors = require('cors');
-const path = require('path');
-const fs = require('fs').promises;
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-const { extractDate } = require('./services/dateExtractor');
-const { detectCategory, initializeAI } = require('./services/categoryDetector');
-const { organizeFile, getFileStructure, ensureDirectoryExists } = require('./services/fileOrganizer');
-const { saveMetadata } = require('./services/metadataService');
-const { DocumentState, ProcessingStatus } = require('./services/processingState');
-const { dispatchProcessing } = require('./services/universalProcessor');
+import express, { Request, Response, NextFunction } from 'express';
+import multer from 'multer';
+import cors from 'cors';
+import * as path from 'path';
+import { promises as fs } from 'fs';
+
+import { extractDate } from './services/dateExtractor';
+import { detectCategory, initializeAI } from './services/categoryDetector';
+import { organizeFile, getFileStructure, ensureDirectoryExists } from './services/fileOrganizer';
+import { saveMetadata } from './services/metadataService';
+import { DocumentState, ProcessingStatus } from './services/processingState';
+import { dispatchProcessing } from './services/universalProcessor';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -50,17 +52,19 @@ const upload = multer({
 /**
  * Main upload endpoint
  */
-app.post('/api/upload', upload.array('files', 10), async (req, res) => {
-    const results = [];
+app.post('/api/upload', upload.array('files', 10), async (req: Request, res: Response) => {
+    const results: any[] = [];
 
     try {
-        if (!req.files || req.files.length === 0) {
+        const files = req.files as Express.Multer.File[];
+
+        if (!files || files.length === 0) {
             return res.status(400).json({ error: 'No files uploaded' });
         }
 
-        console.log(`Processing ${req.files.length} file(s)...`);
+        console.log(`Processing ${files.length} file(s)...`);
 
-        for (const file of req.files) {
+        for (const file of files) {
             console.log(`\nProcessing: ${file.originalname}`);
 
             // Initialize processing state
@@ -106,7 +110,7 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
                 // Clean up temp file
                 await fs.unlink(file.path).catch(() => { });
 
-            } catch (error) {
+            } catch (error: any) {
                 console.error(`Error processing ${file.originalname}:`, error);
 
                 // Track failure state
@@ -132,12 +136,12 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
 
         res.json({
             success: true,
-            message: `Processed ${req.files.length} file(s)`,
+            message: `Processed ${files.length} file(s)`,
             results,
             fileStructure
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Upload error:', error);
         res.status(500).json({
             error: 'Failed to process files',
@@ -149,11 +153,11 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
 /**
  * Get current file structure
  */
-app.get('/api/structure', async (req, res) => {
+app.get('/api/structure', async (req: Request, res: Response) => {
     try {
         const fileStructure = await getFileStructure(UPLOAD_DIR);
         res.json({ fileStructure });
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({ error: error.message });
     }
 });
@@ -161,7 +165,7 @@ app.get('/api/structure', async (req, res) => {
 /**
  * Health check endpoint
  */
-app.get('/api/health', (req, res) => {
+app.get('/api/health', (req: Request, res: Response) => {
     res.json({
         status: 'ok',
         aiEnabled: aiInitialized,
@@ -170,7 +174,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Error handling middleware
-app.use((error, req, res, next) => {
+app.use((error: any, req: Request, res: Response, next: NextFunction) => {
     console.error('Server error:', error);
     res.status(500).json({
         error: 'Internal server error',

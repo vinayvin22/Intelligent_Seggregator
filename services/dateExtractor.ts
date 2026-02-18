@@ -1,11 +1,11 @@
-const { parse, isValid } = require('date-fns');
+import { parse, isValid } from 'date-fns';
 
 /**
  * Extract date from medical document text
- * @param {string} text - Document text
- * @returns {string|null} ISO date string or null
+ * @param text - Document text
+ * @returns ISO date string or null
  */
-function extractDate(text) {
+export function extractDate(text: string): string | null {
     if (!text) return null;
 
     // Common date patterns in medical reports
@@ -25,8 +25,7 @@ function extractDate(text) {
     // Keywords that often precede dates in medical reports
     const dateKeywords = ['date:', 'report date:', 'test date:', 'examination date:', 'dated:', 'on:'];
 
-    let bestDate = null;
-    let highestPriority = 0;
+    let bestDate: string | null = null;
 
     // Search for dates near keywords first (higher priority)
     for (const keyword of dateKeywords) {
@@ -36,7 +35,6 @@ function extractDate(text) {
             const date = findDateInText(contextText, datePatterns);
             if (date && !bestDate) {
                 bestDate = date;
-                highestPriority = 2;
             }
         }
     }
@@ -51,11 +49,11 @@ function extractDate(text) {
 
 /**
  * Find and parse date from text using patterns
- * @param {string} text - Text to search
- * @param {Array} patterns - Regex patterns
- * @returns {string|null} ISO date string
+ * @param text - Text to search
+ * @param patterns - Regex patterns
+ * @returns ISO date string
  */
-function findDateInText(text, patterns) {
+function findDateInText(text: string, patterns: RegExp[]): string | null {
     for (const pattern of patterns) {
         const matches = text.matchAll(pattern);
         for (const match of matches) {
@@ -71,10 +69,10 @@ function findDateInText(text, patterns) {
 
 /**
  * Parse date string to ISO format
- * @param {string} dateStr - Date string
- * @returns {string|null} ISO date string
+ * @param dateStr - Date string
+ * @returns ISO date string
  */
-function parseDate(dateStr) {
+function parseDate(dateStr: string): string | null {
     const formats = [
         'dd/MM/yyyy',
         'dd-MM-yyyy',
@@ -100,5 +98,3 @@ function parseDate(dateStr) {
 
     return null;
 }
-
-module.exports = { extractDate };

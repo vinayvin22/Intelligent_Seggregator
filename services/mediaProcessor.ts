@@ -1,19 +1,19 @@
-const { createPdfFromText } = require('./textProcessor');
+import { createPdfFromText } from './textProcessor';
 
 /**
  * Process Media files (Audio/Video).
  * Extracts metadata and stream info, converting it to a PDF summary.
  * 
- * @param {string} filePath - Absolute path to the file
- * @param {string} mimeType - Detected MIME type
- * @returns {Promise<Array>} Standard page objects
+ * @param filePath - Absolute path to the file
+ * @param mimeType - Detected MIME type
+ * @returns Standard page objects
  */
-async function processMediaFile(filePath, mimeType) {
+export async function processMediaFile(filePath: string, mimeType: string): Promise<any[]> {
     let summary = `[Media Processor] ${mimeType.toUpperCase()} file\n\n`;
 
     try {
         // Dynamic import for ESM-only 'music-metadata' package
-        const mm = await import('music-metadata');
+        const mm: any = await import('music-metadata');
         const metadata = await mm.parseFile(filePath);
 
         summary += `Format: ${metadata.format.container || 'Unknown'}\n`;
@@ -29,10 +29,8 @@ async function processMediaFile(filePath, mimeType) {
 
         return await createPdfFromText(summary);
 
-    } catch (error) {
+    } catch (error: any) {
         summary += `Error extracting metadata: ${error.message}\n`;
         return await createPdfFromText(summary);
     }
 }
-
-module.exports = { processMediaFile };

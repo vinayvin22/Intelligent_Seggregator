@@ -1,10 +1,11 @@
-const fs = require('fs').promises;
-const { PDFDocument, StandardFonts, rgb } = require('pdf-lib');
+import { promises as fs } from 'fs';
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import * as xml2js from 'xml2js';
 
 /**
  * Process text file and convert to PDF
  */
-async function processTextFile(filePath) {
+export async function processTextFile(filePath: string): Promise<any[]> {
     const content = await fs.readFile(filePath, 'utf8');
     return await createPdfFromText(content);
 }
@@ -12,7 +13,7 @@ async function processTextFile(filePath) {
 /**
  * Process JSON file and convert to PDF
  */
-async function processJsonFile(filePath) {
+export async function processJsonFile(filePath: string): Promise<any[]> {
     const content = await fs.readFile(filePath, 'utf8');
     let text = content;
     try {
@@ -26,8 +27,7 @@ async function processJsonFile(filePath) {
 /**
  * Process XML file and convert to PDF
  */
-async function processXMLFile(filePath) {
-    const xml2js = require('xml2js');
+export async function processXMLFile(filePath: string): Promise<any[]> {
     const content = await fs.readFile(filePath, 'utf8');
     let text = content;
     try {
@@ -44,7 +44,7 @@ async function processXMLFile(filePath) {
  * Helper to create PDF from text content
  * Exported to be used by other processors (Office, Media, etc.)
  */
-async function createPdfFromText(text) {
+export async function createPdfFromText(text: string): Promise<any[]> {
     const pdfDoc = await PDFDocument.create();
     let page = pdfDoc.addPage();
     const { width, height } = page.getSize();
@@ -93,10 +93,3 @@ async function createPdfFromText(text) {
         totalPages: pdfDoc.getPageCount()
     }];
 }
-
-module.exports = {
-    processTextFile,
-    processJsonFile,
-    processXMLFile,
-    createPdfFromText
-};

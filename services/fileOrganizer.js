@@ -18,9 +18,11 @@ async function organizeFile(fileData, uploadDir) {
 
     await ensureDirectoryExists(categoryDir);
 
-    // Generate filename: originalName_page1.pdf
+    // Generate filename: originalName_page1.ext
     const baseName = path.parse(originalName).name;
-    const fileName = `${baseName}_page${pageNumber + 1}.pdf`;
+    const ext = fileData.fileExtension || '.pdf';
+    const safeExt = ext.startsWith('.') ? ext : `.${ext}`;
+    const fileName = `${baseName}_page${pageNumber + 1}${safeExt}`;
     const filePath = path.join(categoryDir, fileName);
 
     // Save file

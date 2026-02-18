@@ -11,6 +11,8 @@ const { detectCategory, initializeAI } = require('./services/categoryDetector');
 const { organizeFile, getFileStructure, ensureDirectoryExists } = require('./services/fileOrganizer');
 const { processTextFile, processJsonFile } = require('./services/textProcessor');
 const { processImageToPdf } = require('./services/ocrService');
+const { saveMetadata } = require('./services/metadataService');
+const { DocumentState, ProcessingStatus } = require('./services/processingState');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -42,21 +44,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage: storage,
-    fileFilter: (req, file, cb) => {
-        const allowedTypes = [
-            'application/pdf',
-            'image/png', 'image/jpeg', 'image/jpg',
-            'text/plain',
-            'application/json'
-        ];
-        if (allowedTypes.includes(file.mimetype)) {
-            cb(null, true);
-        } else {
-            cb(new Error('Invalid file type. Allowed: PDF, PNG, JPG, TXT, JSON'));
-        }
-    },
     limits: {
-        fileSize: 10 * 1024 * 1024 // 10MB limit
+        fileSize: 50 * 1024 * 1024 // Increased limit to 50MB for general files
     }
 });
 
@@ -64,6 +53,8 @@ const upload = multer({
  * Main upload endpoint
  */
 app.post('/api/upload', upload.array('files', 10), async (req, res) => {
+    const results = [];
+
     try {
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ error: 'No files uploaded' });
@@ -71,13 +62,17 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
 
         console.log(`Processing ${req.files.length} file(s)...`);
 
-        const results = [];
-
-        // Process each uploaded file
         for (const file of req.files) {
             console.log(`\nProcessing: ${file.originalname}`);
 
+            // Initialize processing state
+            const state = new DocumentState(file.originalname);
+            state.transition(ProcessingStatus.UPLOADED);
+
             try {
+                // Transition to PROCESSING
+                state.transition(ProcessingStatus.PROCESSING);
+
                 // Process based on file type
                 let pages = [];
 
@@ -89,27 +84,43 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
                     pages = await processJsonFile(file.path);
                 } else if (file.mimetype.startsWith('image/')) {
                     pages = await processImageToPdf(file.path);
+                } else {
+                    // Generic handler for all other file types
+                    const buffer = await fs.readFile(file.path);
+                    pages = [{
+                        pageNumber: 0,
+                        text: file.originalname, // Use filename as context
+                        pdfBytes: buffer,
+                        totalPages: 1,
+                        extension: path.extname(file.originalname)
+                    }];
                 }
 
-                // Process each page
+                state.transition(ProcessingStatus.CLASSIFIED, { pageCount: pages.length });
+
+                // Process pages
                 for (const page of pages) {
                     // Extract date
                     const date = extractDate(page.text) || new Date().toISOString().split('T')[0];
-
-                    // Detect category
                     const category = await detectCategory(page.text);
 
                     console.log(`Page ${page.pageNumber}: Category=${category}, Date=${date}`);
 
-                    // Organize and save file
                     const result = await organizeFile({
                         category,
                         date,
                         pageNumber: page.pageNumber,
                         pdfBytes: page.pdfBytes,
                         originalName: file.originalname,
-                        textContent: page.text
+                        textContent: page.text,
+                        fileExtension: page.extension // Pass extension
                     }, UPLOAD_DIR);
+
+                    state.transition(ProcessingStatus.STORED, {
+                        filePath: result.filePath,
+                        category,
+                        date
+                    });
 
                     results.push(result);
                 }
@@ -119,6 +130,18 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
 
             } catch (error) {
                 console.error(`Error processing ${file.originalname}:`, error);
+
+                // Track failure state
+                state.fail(error);
+
+                // Persist failure metadata explicitly
+                await saveMetadata({
+                    originalFileName: file.originalname,
+                    status: ProcessingStatus.FAILED,
+                    error: error.message,
+                    history: state.history // Save history audit trail
+                });
+
                 results.push({
                     error: `Failed to process ${file.originalname}: ${error.message}`,
                     fileName: file.originalname

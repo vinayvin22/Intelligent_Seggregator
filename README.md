@@ -5,8 +5,8 @@ An AI-powered medical document organization system that automatically categorize
 ## Features
 
 - 📁 **Automatic Categorization**: AI-powered detection of medical categories (Heart, Kidney, Brain, Eye, etc.)
-- 📅 **Date Extraction**: Automatically extracts report dates from documents
-- 📄 **PDF Splitting**: Splits multi-page PDFs into individual pages for separate processing
+- 📅 **Date Extraction**: Automatically extracts report dates from all formatted documents
+- 📄 **Files Splitting**: Splits multi-page PDFs and Files into individual pages for separate processing
 - 🎨 **Premium UI**: Beautiful, modern interface with drag-and-drop support
 - 🔄 **Batch Processing**: Upload multiple files at once
 - 🏷️ **Category Normalization**: Prevents duplicate categories (e.g., "cardiac", "heart", "ECG" all map to "Heart")

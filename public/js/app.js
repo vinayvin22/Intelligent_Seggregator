@@ -60,16 +60,10 @@ function handleFileSelect(e) {
 function addFiles(files) {
     // Filter valid files
     const validFiles = files.filter(file => {
-        const validTypes = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'];
-        const maxSize = 10 * 1024 * 1024; // 10MB
-
-        if (!validTypes.includes(file.type)) {
-            showError(`${file.name}: Invalid file type. Only PDF and images allowed.`);
-            return false;
-        }
+        const maxSize = 50 * 1024 * 1024; // 50MB (Match backend limit)
 
         if (file.size > maxSize) {
-            showError(`${file.name}: File too large. Max 10MB.`);
+            showError(`${file.name}: File too large. Max 50MB.`);
             return false;
         }
 

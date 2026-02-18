@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
@@ -17,13 +19,14 @@
             <div class="header-content">
                 <div class="logo">
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="40" height="40" rx="8" fill="url(#gradient)"/>
-                        <path d="M20 10L12 16V28L20 34L28 28V16L20 10Z" fill="white" opacity="0.9"/>
-                        <path d="M20 16V28M14 19L20 16L26 19M14 25L20 28L26 25" stroke="url(#gradient)" stroke-width="2" stroke-linecap="round"/>
+                        <rect width="40" height="40" rx="8" fill="url(#gradient)" />
+                        <path d="M20 10L12 16V28L20 34L28 28V16L20 10Z" fill="white" opacity="0.9" />
+                        <path d="M20 16V28M14 19L20 16L26 19M14 25L20 28L26 25" stroke="url(#gradient)" stroke-width="2"
+                            stroke-linecap="round" />
                         <defs>
                             <linearGradient id="gradient" x1="0" y1="0" x2="40" y2="40">
-                                <stop offset="0%" stop-color="#667eea"/>
-                                <stop offset="100%" stop-color="#764ba2"/>
+                                <stop offset="0%" stop-color="#667eea" />
+                                <stop offset="100%" stop-color="#764ba2" />
                             </linearGradient>
                         </defs>
                     </svg>
@@ -40,17 +43,21 @@
                 <div class="upload-card">
                     <div class="upload-zone" id="uploadZone">
                         <div class="upload-icon">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M7 18C4.79086 18 3 16.2091 3 14C3 11.7909 4.79086 10 7 10C7 7.23858 9.23858 5 12 5C14.7614 5 17 7.23858 17 10C19.2091 10 21 11.7909 21 14C21 16.2091 19.2091 18 17 18" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M12 12V21M12 12L9 15M12 12L15 15" stroke-linecap="round" stroke-linejoin="round"/>
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path
+                                    d="M7 18C4.79086 18 3 16.2091 3 14C3 11.7909 4.79086 10 7 10C7 7.23858 9.23858 5 12 5C14.7614 5 17 7.23858 17 10C19.2091 10 21 11.7909 21 14C21 16.2091 19.2091 18 17 18"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M12 12V21M12 12L9 15M12 12L15 15" stroke-linecap="round"
+                                    stroke-linejoin="round" />
                             </svg>
                         </div>
                         <h2>Drop your medical files here</h2>
                         <p>or click to browse</p>
-                        <input type="file" id="fileInput" multiple accept=".pdf,image/*" hidden>
+                        <input type="file" id="fileInput" multiple hidden>
                         <button class="browse-btn" id="browseBtn">Browse Files</button>
                         <div class="file-info">
-                            <p>Supports: PDF, PNG, JPG • Max 10MB per file</p>
+                            <p>Supports: PDF, Office, Media, Archives, and more • Max 50MB per file</p>
                         </div>
                     </div>
 
@@ -60,8 +67,9 @@
                     <!-- Upload Button -->
                     <button class="upload-btn" id="uploadBtn" disabled>
                         <span>Upload & Process</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </button>
                 </div>
@@ -106,4 +114,5 @@
 
     <script src="js/app.js"></script>
 </body>
+
 </html>

@@ -15,6 +15,7 @@ import { DocumentState, ProcessingStatus } from './services/processingState';
 import { dispatchProcessing } from './services/universalProcessor';
 
 const app = express();
+export default app;
 const PORT = process.env.PORT || 3000;
 const UPLOAD_DIR = process.env.UPLOAD_DIR || 'uploads';
 

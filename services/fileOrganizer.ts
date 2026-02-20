@@ -72,6 +72,8 @@ export async function getFileStructure(uploadDir: string): Promise<any> {
         const dates = await fs.readdir(uploadDir);
 
         for (const dateFolder of dates) {
+            if (dateFolder === 'MasterVault') continue; // Skip MasterVault in the main hierarchy view
+
             const datePath = path.join(uploadDir, dateFolder);
             const dateStat = await fs.stat(datePath);
 
